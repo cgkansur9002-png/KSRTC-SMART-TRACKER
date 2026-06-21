@@ -225,7 +225,7 @@
                 if (diff < 0) statusText = `Running Early by ${formatDuration(diff)}`;
 
                 let popupMessage = `<div style="font-size:13px; line-height: 1.4; min-width:180px;">
-                    <b style="color:#d32f2f; font-size:14px;">NWKRTC Tracker (${routeStops[23].actual ? 'Arrived' : 'In Transit'})</b><br>
+                    <b style="color:#d32f2f; font-size:14px;">KA-31-F-XXXX (${routeStops[23].actual ? 'Arrived' : 'In Transit'})</b><br>
                     <b>Current Station:</b> ${activeStop.name}<br>
                     <b>Status:</b> ${statusText} (${activeStop.actual || activeStop.scheduled})
                 </div>`;
