@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>N.W.K.R.T.C Live Route Tracker</title>
-    <!-- Leaflet Infrastructure -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <style>
@@ -13,23 +12,26 @@
         /* Default Layout Structure (Desktop View) */
         body { display: flex; height: 100vh; overflow: hidden; background: #f4f6f9; }
         
-        #sidebar { width: 380px; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 1000; }
+        #sidebar { width: 380px; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 1000; position: relative; }
         #map { flex: 1; height: 100%; }
 
-        /* N.W.K.R.T.C Header styling */
-        .header { padding: 20px; background: #d32f2f; color: white; border-bottom: 4px solid #b71c1c; }
-        .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-        .route-title { font-size: 1.1rem; font-weight: 600; margin-top: 2px; opacity: 0.95; }
-        .bus-number { font-size: 0.8rem; font-weight: bold; background: rgba(0, 0, 0, 0.25); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 6px; letter-spacing: 0.5px; color: #ffeb3b; }
+        /* Centered Big Header Custom Styling */
+        .header { padding: 20px; background: #d32f2f; color: white; border-bottom: 4px solid #b71c1c; text-align: center; position: relative; }
+        .header h1 { font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); line-height: 1.1; }
+        .route-title { font-size: 1.1rem; font-weight: 600; margin-top: 6px; opacity: 0.95; }
+        .bus-number { font-size: 0.8rem; font-weight: bold; background: rgba(0, 0, 0, 0.25); padding: 3px 12px; border-radius: 4px; display: inline-block; margin-top: 6px; letter-spacing: 0.5px; color: #ffeb3b; }
         
         /* Pickup and Drop-off Info Block */
-        .trip-summary { background: rgba(255, 255, 255, 0.12); margin-top: 12px; padding: 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1.5; }
+        .trip-summary { background: rgba(255, 255, 255, 0.12); margin-top: 12px; padding: 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1.5; text-align: left; }
         .trip-summary div { display: flex; justify-content: space-between; margin-bottom: 4px; }
         .trip-summary div:last-child { margin-bottom: 0; }
         .trip-label { font-weight: bold; text-transform: uppercase; opacity: 0.85; }
         .trip-value { font-weight: 600; text-align: right; }
 
-        .role-badge { background: #34a853; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 0.7rem; margin-top: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Faint Signature Line */
+        .signature { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; opacity: 0.45; letter-spacing: 0.5px; margin-top: 10px; text-align: right; display: block; color: white; }
+
+        .role-badge { background: #34a853; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 0.7rem; margin-top: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         
         /* Desktop Scroll Container */
         #schedule-list { flex: 1; overflow-y: auto; padding: 15px; background: #fafafa; display: block; }
@@ -57,7 +59,6 @@
 
         /* =======================================================
            MOBILE HORIZONTAL SIDE-SCROLLER ENGINE (Media Query)
-           Applies automatically to screens under 768px wide
            ======================================================= */
         @media (max-width: 768px) {
             body { flex-direction: column; height: 100vh; overflow: hidden; }
@@ -65,14 +66,13 @@
             #sidebar { width: 100%; height: auto; box-shadow: none; flex: none; }
             
             .header { padding: 12px 15px; }
-            .header h1 { font-size: 1.3rem; }
+            .header h1 { font-size: 1.8rem; }
             .trip-summary { margin-top: 8px; padding: 8px; font-size: 0.75rem; }
-            .role-badge { margin-top: 6px; }
+            .signature { margin-top: 6px; }
+            .role-badge { margin-top: 4px; }
             
-            /* Map takes up the remaining core height space */
             #map { width: 100%; flex: 1; height: auto; }
             
-            /* TRANSFORM TO HORIZONTAL SIDE SCROLLER */
             #schedule-list { 
                 display: flex; 
                 flex-direction: row; 
@@ -81,15 +81,14 @@
                 padding: 10px; 
                 background: #f1f3f4;
                 gap: 10px;
-                height: 125px; /* Fixed elegant height for side cards */
+                height: 125px;
                 flex: none;
-                /* Native fluid kinetic scrolling mechanics for iOS & Android */
                 -webkit-overflow-scrolling: touch; 
                 scroll-snap-type: x mandatory;
             }
             
             .stop-card { 
-                width: 240px; /* Snappy card width constraint */
+                width: 240px; 
                 margin-bottom: 0; 
                 padding: 10px 12px;
                 scroll-snap-align: start;
@@ -122,17 +121,16 @@
             </div>
             
             <div id="role-display" class="role-badge">Admin Mode</div>
+            <span class="signature">Made by cgkansur</span>
         </div>
         <div id="schedule-list"></div>
     </div>
 
     <div id="map"></div>
 
-    <!-- Leaflet Framework Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
-    <!-- Firebase Connection Engine Bundle -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
