@@ -172,7 +172,7 @@
             { id: 12, name: "Kaduru", lat: 13.5539, lng: 76.0125, scheduled: "16:50", actual: "", note: "" },
             { id: 13, name: "Birur", lat: 13.5937, lng: 75.9754, scheduled: "17:05", actual: "", note: "" },
             { id: 14, name: "Tarikere", lat: 13.7061, lng: 75.8152, scheduled: "17:35", actual: "", note: "" },
-            { id: 15, name: "Bhadravathi", lat: 13.8415, lng: 75.7024, scheduled: "18:05", actual: "", note: "" },
+            { id: 15, name: "Bhadravathi", lat: 13.8415, lng: 75.7024, stitched: "", scheduled: "18:05", actual: "", note: "" },
             { id: 16, name: "Shivamogga", lat: 13.9299, lng: 75.5681, scheduled: "18:35", actual: "", note: "" },
             { id: 17, name: "Ayanur", lat: 14.0118, lng: 75.4428, scheduled: "19:00", actual: "", note: "" },
             { id: 18, name: "Anandpura", lat: 14.0745, lng: 75.2458, scheduled: "19:25", actual: "", note: "" },
@@ -193,6 +193,20 @@
             return (hrs * 60) + mins;
         }
 
+        // Formats total raw minutes cleanly into Hours and Minutes format
+        function formatDuration(totalMins) {
+            const mins = Math.abs(totalMins);
+            if (mins < 60) {
+                return `${mins} mins`;
+            }
+            const hours = Math.floor(mins / 60);
+            const remainingMins = mins % 60;
+            
+            const hourText = hours === 1 ? "1 hour" : `${hours} hours`;
+            const minText = remainingMins > 0 ? ` ${remainingMins} mins` : "";
+            return `${hourText}${minText}`;
+        }
+
         function updateBusMarkerPosition() {
             let activeStop = null;
             for (let i = 0; i < routeStops.length; i++) {
@@ -207,8 +221,8 @@
                 
                 let diff = timeToMinutes(activeStop.actual) - timeToMinutes(activeStop.scheduled);
                 let statusText = "Left on Time";
-                if (diff > 0) statusText = `Delayed by ${diff} mins`;
-                if (diff < 0) statusText = `Running Early by ${Math.abs(diff)} mins`;
+                if (diff > 0) statusText = `Delayed by ${formatDuration(diff)}`;
+                if (diff < 0) statusText = `Running Early by ${formatDuration(diff)}`;
 
                 let popupMessage = `<div style="font-size:13px; line-height: 1.4; min-width:180px;">
                     <b style="color:#d32f2f; font-size:14px;">NWKRTC Tracker (${routeStops[23].actual ? 'Arrived' : 'In Transit'})</b><br>
@@ -237,10 +251,10 @@
                     const diff = timeToMinutes(stop.actual) - timeToMinutes(stop.scheduled);
                     if (diff > 0) {
                         cardClass += " delayed-card";
-                        statusHTML = `<span class="status delayed">Delayed by ${diff} mins</span>`;
+                        statusHTML = `<span class="status delayed">Delayed by ${formatDuration(diff)}</span>`;
                     } else if (diff < 0) {
                         cardClass += " early-card";
-                        statusHTML = `<span class="status early">Running Early by ${Math.abs(diff)} mins</span>`;
+                        statusHTML = `<span class="status early">Running Early by ${formatDuration(diff)}</span>`;
                     } else {
                         statusHTML = `<span class="status left-ontime">Left on Time</span>`;
                     }
