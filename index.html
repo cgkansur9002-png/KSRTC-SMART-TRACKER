@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Default Layout Structure (Desktop & Tablets) */
         body { display: flex; height: 100vh; overflow: hidden; background: #f4f6f9; }
         
-        /* Sidebar layout styling */
         #sidebar { width: 380px; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 1000; }
-        
-        /* Redesigned N.W.K.R.T.C Header */
+        #map { flex: 1; height: 100%; }
+
+        /* Redesigned N.W.K.R.T.C Header styling */
         .header { padding: 20px; background: #d32f2f; color: white; border-bottom: 4px solid #b71c1c; }
         .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
         .route-title { font-size: 1.1rem; font-weight: 600; margin-top: 2px; opacity: 0.95; }
@@ -47,10 +49,28 @@
         .status.break-badge { background: #feefe3; color: #b06000; }
         .status.current-badge { background: #34a853; color: white; }
 
-        /* Map UI Container */
-        #map { flex: 1; height: 100%; }
         .bus-div-icon { font-size: 28px; text-align: center; line-height: 1; filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.4)); transition: all 0.5s ease-in-out; }
         .leaflet-routing-container { display: none !important; }
+
+        /* =======================================================
+           DYNAMIC SMARTPHONE RECONFIGURATION ENGINE (Media Query)
+           Applies automatically to screens under 768px wide
+           ======================================================= */
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            
+            #sidebar { width: 100%; height: auto; box-shadow: none; }
+            
+            .header { padding: 15px; }
+            .header h1 { font-size: 1.4rem; }
+            
+            /* Give map a prominent dedicated window frame view on mobile device */
+            #map { width: 100%; height: 45vh; min-height: 300px; flex: none; }
+            
+            /* The list rolls gracefully below the map pane frame */
+            #schedule-list { height: auto; max-height: none; overflow-y: visible; padding: 12px; }
+            .stop-card { padding: 14px; margin-bottom: 8px; } /* Slightly larger click targets for mobile fingers */
+        }
     </style>
 </head>
 <body>
@@ -88,6 +108,7 @@
 
         const IS_ADMIN = true; 
 
+        // REPLACE WITH YOUR ACTUAL FIREBASE CONFIGURATION COPIED FROM CONSOLE
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
