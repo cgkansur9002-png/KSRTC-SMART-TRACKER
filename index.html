@@ -107,7 +107,7 @@
         <div class="header">
             <h1>N.W.K.R.T.C</h1>
             <div class="route-title">Bengaluru to Sirsi</div>
-            <div class="bus-number">KA 31 F XXXX</div>
+            <div class="bus-number">KA-31-F-1698</div>
             
             <div class="trip-summary">
                 <div>
@@ -158,7 +158,7 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         let routeStops = [
-            { id: 1, name: "Kempegowda Bus Station (Majestic)", lat: 12.9779, lng: 77.5721, scheduled: "12:05", actual: "12:05", note: "" },
+            { id: 1, name: "Kempegowda Bus Station (Majestic)", lat: 12.9779, lng: 77.5721, scheduled: "12:05", actual: "12:08", note: "" },
             { id: 2, name: "Yeshwantpur Cross", lat: 13.0236, lng: 77.5529, scheduled: "12:25", actual: "", note: "" },
             { id: 3, name: "Goraguntepalya", lat: 13.0284, lng: 77.5413, scheduled: "12:35", actual: "", note: "" },
             { id: 4, name: "Nelamangala", lat: 13.0967, lng: 77.3916, scheduled: "13:05", actual: "", note: "" },
@@ -225,7 +225,7 @@
                 if (diff < 0) statusText = `Running Early by ${formatDuration(diff)}`;
 
                 let popupMessage = `<div style="font-size:13px; line-height: 1.4; min-width:180px;">
-                    <b style="color:#d32f2f; font-size:14px;">KA-31-F-XXXX (${routeStops[23].actual ? 'Arrived' : 'In Transit'})</b><br>
+                    <b style="color:#d32f2f; font-size:14px;">KA-31-F-1698 (${routeStops[23].actual ? 'Arrived' : 'In Transit'})</b><br>
                     <b>Current Station:</b> ${activeStop.name}<br>
                     <b>Status:</b> ${statusText} (${activeStop.actual || activeStop.scheduled})
                 </div>`;
